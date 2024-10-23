@@ -65,6 +65,13 @@
       margin-right: auto;
     }
 
+    div {
+  max-width: 768px;
+  max-height: 1024px;
+  margin: auto;
+  display: block;
+}
+
     .avatar {
   width: 100%;           /* Ensure the image takes the full width of the container */
   max-width: 250px;       /* Set the max size for larger screens */
@@ -112,21 +119,32 @@
   padding: 15px;
 }
 
-@media (min-width: 768px) {
-  .col-lg-4 {
-    width: 33.33%;
+/* Global styling for mobile devices */
+@media (max-width: 600px) {
+  .container {
+    width: 100% !important;
+    padding: 10px !important;
   }
 
-  .col-lg-8 {
-    width: 66.66%;
-  }
-}
-
-@media (max-width: 768px) {
   .col-lg-4, .col-lg-8 {
-    width: 100%; /* Full width for mobile */
+    width: 100% !important; /* Force full width on mobile devices */
+  }
+
+  h2 {
+    font-size: 1.4em !important; /* Adjust heading size for mobile */
+  }
+
+  p {
+    font-size: 1em !important;   /* Adjust paragraph size for readability */
+  }
+
+  .network-icon {
+    display: flex !important;
+    flex-direction: column !important; /* Stack icons vertically */
+    align-items: flex-start !important;
   }
 }
+
 
 
   </style>
