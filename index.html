@@ -49,9 +49,10 @@
 
 
   <style>
-    /* Ensure the content has a fixed width and is centered */
+    /* Ensure the content is responsive */
     .content-wrapper {
-      width: 80% !important; /* Fixed width for content */
+      width: 100%; /* Use full width on smaller screens */
+      max-width: 900px; /* Limit the max width on larger screens */
       margin-left: auto;
       margin-right: auto;
       box-sizing: border-box;
@@ -59,6 +60,7 @@
       padding-bottom: 0;
     }
 
+    /* Responsive navbar collapse */
     .navbar-collapse {
       max-width: 900px;
       width: 100%;
@@ -66,22 +68,25 @@
       margin-right: auto;
     }
 
+    /* Avatar image styling */
     .avatar {
-  width: 80%;           /* Ensures the image takes up the full width of its container */
-  max-width: 250px;       /* Limit the image size to avoid being too large */
-  height: auto;          /* Maintain aspect ratio */
-  border-radius: 50%;    /* Optional: Makes the image circular */
-  margin-bottom: 20px;   /* Adds some spacing below the image */
-}
-
-    section {
-      background-color: white;
-      margin-top: 10 !important;    /* Forcefully remove top margin */
-      margin-bottom: 10 !important; /* Forcefully remove bottom margin */
-      padding-top: 25px !important;   /* Forcefully remove top padding */
-      padding-bottom: 25px !important;/* Forcefully remove bottom padding */
+      width: 100%;        /* Ensure the image takes up the full width on smaller screens */
+      max-width: 250px;    /* Limit the max size to avoid large images */
+      height: auto;        /* Maintain aspect ratio */
+      border-radius: 50%;  /* Circular shape */
+      margin-bottom: 20px; /* Spacing below the image */
     }
 
+    /* Section styling */
+    section {
+      background-color: white;
+      margin-top: 10px !important;  /* Correct margin values */
+      margin-bottom: 10px !important;
+      padding-top: 25px !important;   
+      padding-bottom: 25px !important;
+    }
+
+    /* Alternate section background color */
     section:nth-of-type(odd) {
       background-color: white;
     }
@@ -90,23 +95,42 @@
       background-color: #f0f0f0; /* Light grey background for even sections */
     }
 
-  
     /* Basic body styling for better readability */
     body {
       font-family: Arial, sans-serif !important;
       line-height: 1.6;
-      /* background-color: #f4f4f4; */
       margin: 0;
     }
 
+    /* Scrollable news container */
     .news-container {
       height: 300px; /* Adjust this height to show more or less news */
       overflow-y: scroll;
-      /* padding: 10px; */
     }
 
+    /* Mobile responsiveness */
+    @media (max-width: 768px) {
+      .content-wrapper {
+        width: 100%; /* Full width on smaller screens */
+        padding: 10px; /* Add some padding on mobile */
+      }
 
-  </style>
+      /* Adjust font sizes for mobile */
+      body {
+        font-size: 16px; /* Responsive base font size */
+      }
+
+      .avatar {
+        max-width: 150px; /* Smaller avatar on mobile screens */
+      }
+
+      .news-container {
+        height: auto; /* Let the container grow naturally on mobile */
+        overflow-y: visible; /* Avoid scroll on smaller screens */
+      }
+    }
+</style>
+
 
 </head>
 
