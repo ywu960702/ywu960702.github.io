@@ -49,6 +49,24 @@
 
   <style>
     /* Ensure the content has a fixed width and is centered */
+
+    .container.content-wrapper {
+  width: 100% !important;      /* Ensure it takes full width */
+  max-width: 1200px !important; /* Set a maximum width for large screens */
+  margin: 0 auto !important;   /* Center the container */
+  padding: 15px !important;    /* Add padding for spacing */
+  box-sizing: border-box !important; /* Make sure padding is included in width */
+}
+
+/* Force .col-12 to be full width */
+.col-12 {
+  width: 100% !important;      /* Full width for all screens */
+  padding: 10px !important;    /* Add some padding */
+  box-sizing: border-box !important; /* Make sure padding doesn't exceed width */
+}
+
+
+
     .content-wrapper {
       width: 100% !important; /* Fixed width for content */
       margin-left: auto;
