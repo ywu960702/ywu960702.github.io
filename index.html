@@ -64,27 +64,36 @@
       margin-right: auto;
     }
 
+    .avatar {
+  width: 80%;           /* Ensures the image takes up the full width of its container */
+  max-width: 250px;       /* Limit the image size to avoid being too large */
+  height: auto;          /* Maintain aspect ratio */
+  border-radius: 50%;    /* Optional: Makes the image circular */
+  margin-bottom: 20px;   /* Adds some spacing below the image */
+}
 
-  
-    /* Optional: Add padding for better readability
-    .content-wrapper {
-      padding: 20px;
-    } */
-  
-    /* Ensure that the section has a white background */
     section {
       background-color: white;
       margin-top: 10 !important;    /* Forcefully remove top margin */
       margin-bottom: 10 !important; /* Forcefully remove bottom margin */
-      padding-top: 50px !important;   /* Forcefully remove top padding */
-      padding-bottom: 50px !important;/* Forcefully remove bottom padding */
+      padding-top: 25px !important;   /* Forcefully remove top padding */
+      padding-bottom: 25px !important;/* Forcefully remove bottom padding */
     }
+
+    section:nth-of-type(odd) {
+      background-color: white;
+    }
+
+    section:nth-of-type(even) {
+      background-color: #f0f0f0; /* Light grey background for even sections */
+    }
+
   
     /* Basic body styling for better readability */
     body {
       font-family: Arial, sans-serif !important;
       line-height: 1.6;
-      background-color: #f4f4f4;
+      /* background-color: #f4f4f4; */
       margin: 0;
     }
 
@@ -93,6 +102,7 @@
       overflow-y: scroll;
       /* padding: 10px; */
     }
+
 
   </style>
 
@@ -188,6 +198,9 @@
   </div>
 </nav>
 
+<br>
+
+
   
 <span class="js-widget-page d-none"></span>
 
@@ -204,78 +217,69 @@
 
       
       
-      <img class="avatar avatar-circle" src="./files/yi_new.png" alt="Yi Wu">
+      <img class="avatar" src="./files/yi_2024.jpg" alt="Yi Wu">
       
-
-      <div class="portrait-title">
-        <h2>Yi Wu</h2>
-        <h3>Postdoc @Emory</h3>
-
-        
-        <h3>
-          
-          <span>Ph.D. @University of Tennessee, Knoxville</span>
-          
-        </h3>
-        
-      </div>
-
-      <ul class="network-icon" aria-hidden="true">
-        
-        
-        <li>
-          <a href="mailto:ywu83@vols.utk.edu">
-            <i class="fas fa-envelope big-icon"></i>
-          </a>
-        </li>
-
-        
-        
-        <li>
-          <a href="https://scholar.google.com/citations?hl=en&user=0dxhJ04AAAAJ" target="_blank" rel="noopener">
-            <i class="ai ai-google-scholar big-icon"></i>
-          </a>
-        </li>
-
-
-        <li>
-          <a href="https://www.linkedin.com/in/yi-wu-a15951193" target="_blank" rel="noopener">
-            <i class="fab fa-linkedin big-icon"></i>
-          </a>
-        </li>
-        
-
-          
-        
-        <li>
-          <a href="./CV_YiWu.pdf" target="_blank" rel="noopener">
-            <i class="ai ai-cv big-icon"></i>
-          </a>
-        </li>
-        
-      </ul>
 
     </div>
   </div>
   <div class="col-12 col-lg-8">
 
     
-    <h2>About Me</h2>
+    <h2>Yi Wu | 武艺</h2>
+    <p>Postdoc @Emory University</p>
+    <p>Ph.D. @University of Tennessee, Knoxville</p>
+    <!-- <p><a href="mailto:ywu60@emory.edu">ywu60@emory.edu</a></p> -->
 
-    <p style="text-align: justify;">Welcome to my homepage. I am a Postdoctoral Researcher in the  <a href="https://www.nursing.emory.edu/initiatives/center-for-data-science" target="_blank">Center of Data Science</a> at Emory University, working with <a href="https://www.nursing.emory.edu/faculty-staff/xiao-hu" target="_blank">Dr. Xiao Hu</a>. 
-      I completed my Ph.D. at <a href="https://www.eecs.utk.edu" target="_blank">Min H. Kao Department of Electrical Engineering and Computer Science</a> at University of Tennessee, Knoxville, under supervison of <a href="https://web.eecs.utk.edu/~jliu/" target="_blank">Dr. Jian Liu</a>.</p>
+    <ul class="network-icon" aria-hidden="true">
+        
+        
+      <li>
+        <a href="mailto:ywu83@vols.utk.edu">
+          <i class="fas fa-envelope big-icon"></i>
+        </a>
+      </li>
 
-    <p style="text-align: justify;">
-    My research interests encompass the areas of <b>mobile sensing & computing</b>, <b>human-computer interaction</b>, and <b>cybersecurity
-& privacy</b>. Particularly, I utilize machine learning and signal processing techniques to create next-generation
-applications for human-computer interaction, smart health monitoring, and identifying potential security/privacy issues
-on IoT devices.
-    </p>
+      
+      
+      <li>
+        <a href="https://scholar.google.com/citations?hl=en&user=0dxhJ04AAAAJ" target="_blank" rel="noopener">
+          <i class="ai ai-google-scholar big-icon"></i>
+        </a>
+      </li>
+
+
+      <li>
+        <a href="https://www.linkedin.com/in/yi-wu-a15951193" target="_blank" rel="noopener">
+          <i class="fab fa-linkedin big-icon"></i>
+        </a>
+      </li>
+      
+
+        
+      
+      <li>
+        <a href="./CV_YiWu.pdf" target="_blank" rel="noopener">
+          <i class="ai ai-cv big-icon"></i>
+        </a>
+      </li>
+      
+    </ul>
     </div>
 
     <div class="col-12">
-      <p style="text-align: justify;">
-        I was a research intern at <a href="https://research.snap.com/" target="_blank">Snap Research</a>, where I worked on contrastive-learning-based location identification, and <a href="https://www.truveta.com/" target="_blank">Truveta</a>, where I worked on LLM pre-training, LLM fine-tuning, and medical image de-identification.
+      
+
+        <p style="text-align: justify;">
+          <b><span style="color: red;">I will be joining University of Oklahoma as an Assistant Professor (Tenure-Track) in January 2025. I am actively recruiting Ph.D. students starting Fall 2025. If you're interested in Mobile Sensing, Cybersecurity, Human-computer Interaction, and Smart Health, please feel free to contact me. </span></b>
+       </p>
+
+       <p style="text-align: justify;"> 
+      Greetings! Welcome to my homepage. I am a Postdoctoral Researcher in the  <a href="https://www.nursing.emory.edu/initiatives/center-for-data-science" target="_blank">Center of Data Science</a> at Emory University, working with <a href="https://www.nursing.emory.edu/faculty-staff/xiao-hu" target="_blank">Dr. Xiao Hu</a>. 
+      I completed my Ph.D. at <a href="https://www.eecs.utk.edu" target="_blank">Min H. Kao Department of Electrical Engineering and Computer Science</a> at University of Tennessee, Knoxville, under supervison of <a href="https://web.eecs.utk.edu/~jliu/" target="_blank">Dr. Jian Liu</a>.
+
+      My research interests encompass the areas of <b>mobile sensing & computing</b>, <b>human-computer interaction</b>, and <b>cybersecurity & privacy</b>. Particularly, I utilize machine learning and signal processing techniques to create next-generation applications for human-computer interaction, smart health monitoring, and identifying potential security/privacy issues on IoT devices.
+
+        <!-- I was a research intern at <a href="https://research.snap.com/" target="_blank">Snap Research</a>, where I worked on contrastive-learning-based location identification, and <a href="https://www.truveta.com/" target="_blank">Truveta</a>, where I worked on LLM pre-training, LLM fine-tuning, and medical image de-identification. -->
       </p>
     
 
@@ -284,116 +288,15 @@ on IoT devices.
 
     </p> -->
 
-    <p style="text-align: justify;">
-       <b><span style="color: red;">I will be joining University of Oklahoma as an Assistant Professor (Tenure-Track) in Jan 2025. I am actively recruiting Ph.D. students. If you're interested in Mobile Sensing, Cybersecurity, Human-computer Interaction, and LLM, feel free to contact me. </span></b>
-    </p>
-
-
-    <div class="row">
-
-      
-      <div class="col-md-5">
-        <h3>Interests</h3>
-        <ul class="ul-interests">
-          
-          <li>Mobile Sensing & Computing</li>
-          
-          <li>Cybersecurity & Privacy</li>
-          
-          <li>Human-computer Interaction</li>
-
-          <li>AI for Smart Health</li>
-          
-        </ul>
-      </div>
-      
-
-      
-      <div class="col-md-7">
-        <h3>Education</h3>
-        <ul class="ul-edu fa-ul">
-          
-          <li>
-            <i class="fa-li fas fa-graduation-cap"></i>
-            <div class="description">
-              <p class="course">Ph.D. in Computer Science, 2019 - 2024</p>
-              <p class="institution">University of Tennessee, Knoxville</p>
-            </div>
-          </li>
-          
-          <li>
-            <i class="fa-li fas fa-graduation-cap"></i>
-            <div class="description">
-              <p class="course">M.S. in Computer Engineering, 2017 - 2019</p>
-              <p class="institution">Rutgers University</p>
-            </div>
-          </li>
-          
-          <li>
-            <i class="fa-li fas fa-graduation-cap"></i>
-            <div class="description">
-              <p class="course">B.E. in Automation, 2014 - 2018</p>
-              <p class="institution">University of Electronic Science and Technology of China (UESTC)</p>
-            </div>
-          </li>
-          
-        </ul>
-      </div>
-      
-
     </div>
-  </div>
-</div>
-</div>
-
+    </div>
     </div>
   </section>
 
 
-<!--  Work Experience -->
+<!-- Recent News -->
 
-<!-- <section id="work_experience" class="home-section wg-pages">
-<div class="container">
-      <div class="row ">
-      <div class="col-14 col-lg-3 section-heading">
-        <h2><b>Work Experience</b></h2>
-      </div>
-    
-  <div class="col-14 col-lg-9">
-<ul>
-
-
-<p>
-<b>Research Intern at Truveta (Sept 2023 - Present)</b><br>
-
-<b>Research Intern at SnapChat (Sept 2023 - Present)</b><br>
-
-</p>
-</ul>
-
-  </div>
-</div>
-
-    </div>
-  </section> --> 
-
-  
-    <!-- <section id="news" class="home-section wg-pages   ">
-    <div class="container">
-      
-
-
-<div class="row ">
-  
-    
-      <div class="col-14 col-lg-3 section-heading">
-        <h2><b>Recent News</b></h2>
-        
-      </div>
-    
-  
-  <div class="col-14 col-lg-9"> -->
-    <section id="news" class="home-section wg-accomplishments" style="background-color: white;">
+    <section id="news" class="home-section wg-accomplishments" >
       <div class="container content-wrapper">
         <div class="row">
           <div class="col-12 text-left">
@@ -403,6 +306,32 @@ on IoT devices.
         <div class="row">
           <div class="col-12 news-container">
 <ul>
+
+  <li>
+    <p>
+      
+      [Oct. 2024] One paper accepted to <a href="https://ieeexplore.ieee.org/xpl/RecentIssue.jsp?punumber=7755" target="_blank" rel="noopener">IEEE Transactions on Mobile Computing (TMC).</a> </a> 
+    <!--   (Acceptance rate: <b>18.5%</b>) -->
+    </p>
+    <p><br></p>
+
+
+  <li>
+    <p>
+      
+      [July 2024] Successfully defended my Ph.D. dissertation!</a> 
+    <!--   (Acceptance rate: <b>18.5%</b>) -->
+    </p>
+    <p><br></p>
+
+
+  <li>
+    <p>
+      
+      [July 2023] I will join <a href="https://www.truveta.com/" target="_blank">Truveta</a> this fall as a research intern, working on LLM pre-training, LLM fine-tuning, and medical image de-identification.</a> 
+    <!--   (Acceptance rate: <b>18.5%</b>) -->
+    </p>
+    <p><br></p>
 
 
  <li>
@@ -500,517 +429,422 @@ on IoT devices.
 
   
   <section id="publications" class="home-section wg-accomplishments   ">
-    <div class="container">
-      
-
-
-<div class="row">
-  <div class="col-12 col-lg-3 section-heading">
-
-
-    <h2><b>Publications</b></h2>
-    
-  </div>
-
-
-
-
-<div class="col-12 col-lg-9">
-  <h3>Conference Papers</h3>
-  <p>
-  <i class="far fa-file-alt pub-icon" aria-hidden="true"></i>
-
-
-  <b><a style="color: black"> SmarCyPad: A Smart Seat
-Pad for Cycling Fitness Tracking Leveraging Low-cost Conductive Fabric Sensors</a></b>
-  <b><span style="color: blue"><a  target="_blank" href="./papers/wu2023smarcypad.pdf" class="conf">[PDF]</a></span></b><br>
-  <!-- <span class = badge><a  target="_blank" href="https://www.acsac.org/" class="conf">ACSAC 2021</a></span><br> -->
-
-
-  <b>Yi Wu</b>, Luis Gonzalez, Zhenning Yang, Gregory Croisdale, Cagadas Karatas, Jian Liu<br>
-  
-  <span style="color: blue"><a  target="_blank" href="https://www.ubicomp.org/ubicomp-iswc-2023/" class="conf">IMWUT/UbiComp 2023</a></span>  &nbsp<br>
-
-  </p>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-12 col-lg-3 section-heading">
-    
-  </div>
-
-  <div class="col-12 col-lg-9">
-  <p>
-  <i class="far fa-file-alt pub-icon" aria-hidden="true"></i>
-<b><a style="color: black"> Privacy Leakage via
-Unrestricted Motion-Position Sensors in the Age of Virtual Reality: A Study of Snooping Typed Input on Virtual Keyboards</a></b>
-  <b><span style="color: blue"><a  target="_blank" href="./papers/wu2023privacy.pdf" class="conf">[PDF]</a></span></b><br>
-  <!-- <span class = badge><a  target="_blank" href="https://www.acsac.org/" class="conf">ACSAC 2021</a></span><br> -->
-
-
-  <b>Yi Wu</b>, Cong Shi, Tianfang Zhang, Payton Walker, Jian Liu, Nitesh Saxena, Yingying Chen
-  
-  <span style="color: blue"><a  target="_blank" href="https://sp2023.ieee-security.org/" class="conf">S&P/Oakland 2023</a></span>  &nbsp   (Acceptance Rate: 17.4%)<br>
-
-
-  </p>
-  </div>
-</div>    
-
-
-<div class="row">
-  <div class="col-12 col-lg-3 section-heading">
-    
-  </div>
-
-  <div class="col-12 col-lg-9">
-  <p>
-  <i class="far fa-file-alt pub-icon" aria-hidden="true"></i>
-<b><a style="color: black">DroneChase: A Mobile and Automated Cross-Modality System for Continuous Drone Tracking</a></b>
-  <b><span style="color: blue"><a  target="_blank" href="./papers/vora2023drone.pdf" class="conf">[PDF]</a></span></b><br>
-  <!-- <span class = badge><a  target="_blank" href="https://www.acsac.org/" class="conf">ACSAC 2021</a></span><br> -->
-
-
-  Neel R Vora, <b>Yi Wu</b>, Jian Liu, Phuc Nguyen
-  
-  <span style="color: blue"><a  target="_blank" href="https://dronet2023.github.io/" class="conf">DRONET 2023</a></span><br>
-
-
-  </p>
-  </div>
-</div>      
-
-
-<div class="row">
-  <div class="col-12 col-lg-3 section-heading">
-    
-  </div>
-
-  <div class="col-12 col-lg-9">
-  <p>
-  <i class="far fa-file-alt pub-icon" aria-hidden="true"></i>
-<b><a style="color: black"> Time to Rethink the Design of Qi Standard? Security and Privacy Vulnerability Analysis of Qi Wireless Charging</a></b>
-  <b><span style="color: blue"><a  target="_blank" href="./papers/wu2021time.pdf" class="conf">[PDF]</a></span></b><br>
-  <!-- <span class = badge><a  target="_blank" href="https://www.acsac.org/" class="conf">ACSAC 2021</a></span><br> -->
-
-
-  <b>Yi Wu</b>, Zhuohang Li, Nicholas Van Nostrand, Jian Liu<br>
-  
-  <span style="color: blue"><a  target="_blank" href="https://www.acsac.org/" class="conf">ACSAC 2021</a></span>  &nbsp   (Acceptance Rate: 80/326 = 24.5%)<br>
-
-
-  </p>
-  </div>
-</div>      
-
-
-
-
-<div class="row">
-  <div class="col-12 col-lg-3 section-heading">
-
-    
-  </div>
-
-  <div class="col-12 col-lg-9">
-  <p>
-  <i class="far fa-file-alt pub-icon" aria-hidden="true"></i>
-  <b><a style="color: black"> BioFace-3D: Continuous 3D Facial Reconstruction Through Lightweight Single-ear Biosensors</a></b>
-  <b><span style="color: blue"><a  target="_blank" href="papers/wu2021bioface.pdf" class="conf">[PDF]</a></span></b>
-  <b><span style="color: blue"><a  target="_blank" href="https://mosis.eecs.utk.edu/bioface-3d.html" class="conf">[Project Website]</a></span></b>
-  <b><span style="color: blue"><a  target="_blank" href="https://www.sigmobile.org/grav/publications/research-highlights" class="conf">[SIGMOBILE Research Highlight]</a></span></b><br>
-
-  
-
-  <b>Yi Wu</b>, Vimal Kakaraparthi, Zhuohang Li, Tien Pham, Jian Liu, Phuc Nguyen<br>
-  
-  <span cstyle="color: blue"><a  target="_blank" href="https://www.sigmobile.org/mobicom/2021/" class="conf">MobiCom 2021</a></span> &nbsp   (Acceptance rate: 52/299 = 17.4%)<br>
-
-  </p>
-  </div>
-</div>
-
-
-<!-- FaceMic-->
-
-
-<div class="row">
-  <div class="col-12 col-lg-3 section-heading">
-
-    
-  </div>
-
-  <div class="col-12 col-lg-9">
-  <p>
-  <i class="far fa-file-alt pub-icon" aria-hidden="true"></i>
-<b><a style="color: black"> Face-Mic: Inferring Live Speech and Speaker Identity via Subtle Facial Dynamics Captured by AR/VR Motion Sensors</a></b>
- <b><span style="color: blue"><a  target="_blank" href="papers/shi2021facemic.pdf" class="conf">[PDF]</a></span></b><br>
-  Cong Shi, Xiangyu Xu, Tianfang Zhang, Payton R. Walker, <b>Yi Wu</b>, Jian Liu, Nitesh Saxena, Yingying Chen, Jiadi Yu<br>
-  <span cstyle="color: blue"><a  target="_blank" href="https://www.sigmobile.org/mobicom/2021/" class="conf">MobiCom 2021</a></span> &nbsp   (Acceptance rate: 52/299 = 17.4%)<br>
-
-  </p>
-  </div>
-</div>      
-
-<!-- HVAC -->
-
-
-<div class="row">
-  <div class="col-12 col-lg-3 section-heading">
-    
-  </div>
-
-  <div class="col-12 col-lg-9">
-  <p>
-  <i class="far fa-file-alt pub-icon" aria-hidden="true"></i>
-<b><a style="color: black"> HVAC: Evading Classifier-based Defenses in Hidden Voice Attacks</a></b>
-<b><span style="color: blue"><a  target="_blank" href="papers/wu2021hvac.pdf" class="conf">[PDF]</a></span></b><br>
-
-  <b>Yi Wu</b>, Xiangyu Xu, Payton R. Walker, Jian Liu, Nitesh Saxena, Yingying Chen, Jiadi Yu<br>
-  <span style="color: blue"><a  target="_blank" href="https://asiaccs2021.comp.polyu.edu.hk/" class="conf">AsiaCCS 2021</a></span>&nbsp   (Acceptance rate: 18.5%)<br>
-
-
-  </p>
-  </div>
-</div>      
-    
-
-
-<!-- CCS Advpulse -->
-
-
-<div class="row">
-  <div class="col-12 col-lg-3 section-heading">
-
-  </div>
-
-  <div class="col-12 col-lg-9">
-  <p>
-  <i class="far fa-file-alt pub-icon" aria-hidden="true"></i>
-  <b><a style="color: black"> AdvPulse: Universal, Synchronization-free, and Targeted Audio Adversarial Attacks via Subsecond Perturbations</a></b>
-  <b><span style="color: blue"><a  target="_blank" href="papers/li2020advpulse.pdf" class="conf">[PDF]</a></span></b><br>
-
-
-  Zhuohang Li, <b>Yi Wu</b>, Jian Liu, Yingying Chen, Bo Yuan
-  <br>
-<span style="color: blue"><a  target="_blank" href="https://www.sigsac.org/ccs/CCS2020/">CCS 2020</a></span>&nbsp   (Acceptance rate: 16.9%)<br>
-
-  </p>
-  </div>
-</div>     
-    
-
-<!-- DySPAN -->
-
-
-<div class="row">
-  <div class="col-12 col-lg-3 section-heading">
-
-    
-  </div>
-
-  <div class="col-12 col-lg-9">
-  <p>
-  <i class="far fa-file-alt pub-icon" aria-hidden="true"></i>
-  <b><a style="color: black"> Semi-black-box Attacks Against Speech Recognition Systems Using Adversarial Samples</a></b>
-  <b><span style="color: blue"><a  target="_blank" href="papers/wu2019semi.pdf" class="conf">[PDF]</a></span></b><br>
-
-  
-
-
-  <b>Yi Wu</b>, Jian Liu, Yingying Chen, Jerry Cheng<br>
-  <span style="color: blue"><a  target="_blank" href="https://dyspan2019.ieee-dyspan.org/" class="conf">DySPAN 2019</a></span><br>
-
-  </p>
-  </div>
-</div>     
-
-<!-- Bioface GetMobile -->
-
-
-<div class="row">
-  <div class="col-12 col-lg-3 section-heading">
-
-    
-  </div>
-
-  <div class="col-12 col-lg-9">
-    <h3>Journal Papers & Magazine Articles</h3>
-  <p>
-  <i class="far fa-file-alt pub-icon" aria-hidden="true"></i>
-  <b><a style="color: black"> BioFace-3D: 3D Facial Tracking and Animation via Single-ear Wearable Biosensors</a></b>
-  <b><span style="color: blue"><a  target="_blank" href="papers/wu2022bioface.pdf" class="conf">[PDF]</a></span></b><br>
-  <b>Yi Wu</b>, Vimal Kakaraparthi, Zhuohang Li, Tien Pham, Jian Liu, Phuc Nguyen<br>
-  <span style="color: blue">ACM GetMobile 2022</span><br>
-
-
-  </p>
-  </div>
-</div>      
-
-
-<!-- Sensys Poster -->
-
-
-<div class="row">
-  <div class="col-12 col-lg-3 section-heading">
-
-    
-  </div>
-
-  <div class="col-12 col-lg-9">
-    <h3>Posters</h3>
-  <p>
-  <i class="far fa-file-alt pub-icon" aria-hidden="true"></i>
-  <b><a style="color: black"> Poster: Security and Privacy in the Age of Cordless Power World</a></b>
-  <b><span style="color: blue"><a  target="_blank" href="papers/wu2020poster.pdf" class="conf">[PDF]</a></span></b><br>
-  
-
-
-  <b>Yi Wu</b>, Zhuohang Li, Nicholas Van Nostrand, Jian Liu<br>
-  <span style="color: blue"><a  target="_blank" href="http://sensys.acm.org/2020/" class="conf">SenSys 2020</a></span><br>
-<!--   <a class="btn btn-outline-primary my-1 mr-1 btn-sm" href="/~zli96/publications/xie2020real.pdf" target="_blank" rel="noopener">
-  PDF
-  </a>
-
-  <button type="button" class="btn btn-outline-primary my-1 mr-1 btn-sm js-cite-modal"
-        data-filename="/~zli96/publication/icassp20/cite.bib">
-  Cite
-  </button> -->
-
-  </p>
-  </div>
-</div>      
-
-
-
-
-
-    
-  </div>
-</div>
-
-    </div>
-  </section>
-
-  
-
-  
-
-<section id="teaching" class="home-section wg-portfolio   ">
-    <div class="container">
-      
-
-
-<div class="row">
-  <div class="col-12 col-lg-3 section-heading">
-
-    <h2><b>Teaching</b></h2>
-    
-
-  </div>
-  <div class="col-12 col-lg-9">
-
-<ul>
-
-  <li>
-  <p>
-  <b>Teaching Assistant, The University of Tennessee, Knoxville</b><br>
-  COSC 356 Computer Architecture (Fall 2019, Spring 2020)<br>
-  COSC 361 Operating Systems (Fall 2020, Fall 2021, Fall 2022, Spring 2023)<br>
-  ECE 315 Signals and Systems I (Spring 2022)<br>
-  ECE 469/569 Mobile/Embedded System Security (Spring 2021, Fall 2021)<br>
-  
-  
-  
-  
-</p>
-</li>
-    
-
-<li>
-  <p>
-  <b>Grader, Rutgers University </b> <br>
-  ECE 501 System Analysis (Spring 2019)
-</p>
-</li>
-
-<p></p>
-
-  </div>
-</div>
-
-    </div>
-  </section>
-
-
-  
-
-  <section id="awards" class="home-section wg-pages   ">
-    <div class="container">
-      
-
-
-
-<div class="row ">
-  
-    
-      <div class="col-12 col-lg-3 section-heading">
-        <h2><b>Awards</b></h2>
-        
+    <div class="container content-wrapper">
+      <div class="row">
+        <div class="col-12 text-left">
+          <h2><b>Publications</b></h2>
+          
+        </div>
       </div>
 
+      <div class="col-12 text-align">
+      <h3>Conference Papers</h3>
+    </div>
+
+      <div class="col-12 text-align">
+        
+        <p style="text-align: justify;">
+          <span style="color: blue">
+            <a target="_blank" href="https://www.ubicomp.org/ubicomp-iswc-2023/" class="conf">[ACM UbiComp'23]</a>
+          </span>
+          <b>
+            <a style="color: black"> SmarCyPad: A Smart Seat Pad for Cycling Fitness Tracking Leveraging Low-cost Conductive Fabric Sensors</a>
+          </b>
+          <b>
+            <span style="color: blue">
+              <a target="_blank" href="./papers/wu2023smarcypad.pdf" class="conf">[PDF]</a>
+            </span>
+          </b>
+          <br>
+          <b>Yi Wu</b>, Luis Gonzalez, Zhenning Yang, Gregory Croisdale, Cagadas Karatas, Jian Liu
+        </p>
+      </div>
+
+    <div class="col-12 text-align">
+      <p style="text-align: justify;">
+        <span style="color: blue">
+          <a target="_blank" href="https://sp2023.ieee-security.org/" class="conf">[IEEE S&P'23]</a>
+        </span> 
+        <b>
+          <a style="color: black"> Privacy Leakage via Unrestricted Motion-Position Sensors in the Age of Virtual Reality: A Study of Snooping Typed Input on Virtual Keyboards</a>
+        </b>
+        <b>
+          <span style="color: blue">
+            <a target="_blank" href="./papers/wu2023privacy.pdf" class="conf">[PDF]</a>
+          </span>
+        </b>
+        <br>
+        <b>Yi Wu</b>, Cong Shi, Tianfang Zhang, Payton Walker, Jian Liu, Nitesh Saxena, Yingying Chen
+      </p>
+    </div>
+
+    <div class="col-12 text-align: justify">
+      <p style="text-align: justify;">
+        <span style="color: blue">
+          <a target="_blank" href="https://dronet2023.github.io/" class="conf">[ACM DRONET'23]</a>
+        </span> 
+        <b>
+          <a style="color: black">DroneChase: A Mobile and Automated Cross-Modality System for Continuous Drone Tracking</a>
+        </b>
+        <b>
+          <span style="color: blue">
+            <a target="_blank" href="./papers/vora2023drone.pdf" class="conf">[PDF]</a>
+          </span>
+        </b>
+        <br>
+        Neel R Vora, <b>Yi Wu</b>, Jian Liu, Phuc Nguyen
+      </p>
+    </div>
+
+    <div class="col-12 text-align: justify">
+      <p style="text-align: justify;">
+        <span style="color: blue">
+          <a target="_blank" href="https://www.acsac.org/" class="conf">[ACSAC'21]</a>
+        </span> 
+        <b>
+          <a style="color: black">Time to Rethink the Design of Qi Standard? Security and Privacy Vulnerability Analysis of Qi Wireless Charging</a>
+        </b>
+        <b>
+          <span style="color: blue">
+            <a target="_blank" href="./papers/wu2021time.pdf" class="conf">[PDF]</a>
+          </span>
+        </b>
+        <br>
+        <b>Yi Wu</b>, Zhuohang Li, Nicholas Van Nostrand, Jian Liu<br>
+      </p>
+    </div>
     
+    <div class="col-12 text-align: justify">
+      <p style="text-align: justify;">
+        <span style="color: blue">
+          <a target="_blank" href="https://www.sigmobile.org/mobicom/2021/" class="conf">[ACM MobiCom'21]</a>
+        </span> 
+        <b>
+          <a style="color: black">BioFace-3D: Continuous 3D Facial Reconstruction Through Lightweight Single-ear Biosensors</a>
+        </b>
+        <b>
+          <span style="color: blue">
+            <a target="_blank" href="papers/wu2021bioface.pdf" class="conf">[PDF]</a>
+          </span>
+        </b>
+        <br>
+        <b>Yi Wu</b>, Vimal Kakaraparthi, Zhuohang Li, Tien Pham, Jian Liu, Phuc Nguyen<br>
+        <b><span style="color: blue"><a  target="_blank" href="https://mosis.eecs.utk.edu/bioface-3d.html" class="conf">[Project Website]</a></span></b>
+        <b><span style="color: blue"><a  target="_blank" href="https://www.sigmobile.org/grav/publications/research-highlights" class="conf">[SIGMOBILE Research Highlight]</a></span></b><br>
+      </p>
+    </div>
+
+    <div class="col-12 text-align: justify">
+      <p style="text-align: justify;">
+        <span style="color: blue">
+          <a target="_blank" href="https://www.sigmobile.org/mobicom/2021/" class="conf">[ACM MobiCom'21]</a>
+        </span> 
+        <b>
+          <a style="color: black">Face-Mic: Inferring Live Speech and Speaker Identity via Subtle Facial Dynamics Captured by AR/VR Motion Sensors</a>
+        </b>
+        <b>
+          <span style="color: blue">
+            <a target="_blank" href="papers/shi2021facemic.pdf" class="conf">[PDF]</a>
+          </span>
+        </b>
+        <br>
+        Cong Shi, Xiangyu Xu, Tianfang Zhang, Payton R. Walker, <b>Yi Wu</b>, Jian Liu, Nitesh Saxena, Yingying Chen, Jiadi Yu<br>
+      </p>
+    </div>
+
+    <div class="col-12 text-align: justify">
+      <p style="text-align: justify;">
+        <span style="color: blue">
+          <a target="_blank" href="https://asiaccs2021.comp.polyu.edu.hk/" class="conf">[AsiaCCS'21]</a>
+        </span> 
+        <b>
+          <a style="color: black">HVAC: Evading Classifier-based Defenses in Hidden Voice Attacks</a>
+        </b>
+        <b>
+          <span style="color: blue">
+            <a target="_blank" href="papers/wu2021hvac.pdf" class="conf">[PDF]</a>
+          </span>
+        </b>
+        <br>
+        <b>Yi Wu</b>, Xiangyu Xu, Payton R. Walker, Jian Liu, Nitesh Saxena, Yingying Chen, Jiadi Yu<br>
+      </p>
+    </div>
+
+    <div class="col-12 text-align: justify">
+      <p style="text-align: justify;">
+        <span style="color: blue">
+          <a target="_blank" href="https://www.sigsac.org/ccs/CCS2020/" class="conf">[ACM CCS'20]</a>
+        </span> 
+        <b>
+          <a style="color: black">AdvPulse: Universal, Synchronization-free, and Targeted Audio Adversarial Attacks via Subsecond Perturbations</a>
+        </b>
+        <b>
+          <span style="color: blue">
+            <a target="_blank" href="papers/li2020advpulse.pdf" class="conf">[PDF]</a>
+          </span>
+        </b>
+        <br>
+        Zhuohang Li, <b>Yi Wu</b>, Jian Liu, Yingying Chen, Bo Yuan<br>
+      </p>
+    </div>
+
+    <div class="col-12 text-align: justify">
+      <p style="text-align: justify;">
+        <span style="color: blue">
+          <a target="_blank" href="https://dyspan2019.ieee-dyspan.org/" class="conf">[IEEE DySPAN'19]</a>
+        </span> 
+        <b>
+          <a style="color: black">Semi-black-box Attacks Against Speech Recognition Systems Using Adversarial Samples</a>
+        </b>
+        <b>
+          <span style="color: blue">
+            <a target="_blank" href="papers/wu2019semi.pdf" class="conf">[PDF]</a>
+          </span>
+        </b>
+        <br>
+        <b>Yi Wu</b>, Jian Liu, Yingying Chen, Jerry Cheng<br>
+      </p>
+    </div>
+
+
+    <div class="col-12 text-align">
+      <h3>Journal Papers & Magazine Articles</h3>
+    </div>
+ 
+    <div class="col-12 text-align: justify">
+      <p style="text-align: justify;">
+        <span style="color: blue">
+          <a target="_blank" href="https://ieeexplore.ieee.org/xpl/RecentIssue.jsp?punumber=7755" class="conf">[IEEE TMC'24]</a>
+        </span> 
+        <b>
+          <a style="color: black">	
+            3D Facial Tracking and User Authentication through Lightweight Single-ear Biosensors</a>
+        </b>
+        <b>
+          <span style="color: blue">
+            <a target="_blank" href="" class="conf">[PDF]</a>
+          </span>
+        </b>
+        <br>
+        <b>Yi Wu</b>, Xiande Zhang, Tianhao Wu,Bing Zhou, Phuc Nguyen, Jian Liu<br>
+      </p>
+    </div>
+
+    <div class="col-12 text-align: justify">
+      <p style="text-align: justify;">
+        <span style="color: blue">
+          <a target="_blank" href="https://ieeexplore.ieee.org/xpl/RecentIssue.jsp?punumber=7755" class="conf">[ACM GetMobile'22]</a>
+        </span> 
+        <b>
+          <a style="color: black">	
+            BioFace-3D: 3D Facial Tracking and Animation via Single-ear Wearable Biosensors</a>
+        </b>
+        <b>
+          <span style="color: blue">
+            <a target="_blank" href="papers/wu2022bioface.pdf" class="conf">[PDF]</a>
+          </span>
+        </b>
+        <br>
+        <b>Yi Wu</b>, Vimal Kakaraparthi, Zhuohang Li, Tien Pham, Jian Liu, Phuc Nguyen<br>
+      </p>
+    </div>
+
+    <div class="col-12 text-align">
+      <h3>Posters</h3>
+    </div>
+
+    <div class="col-12 text-align: justify">
+      <p style="text-align: justify;">
+        <span style="color: blue">
+          <a target="_blank" href="http://sensys.acm.org/2020/" class="conf">[ACM SenSys'20]</a>
+        </span> 
+        <b>
+          <a style="color: black">	
+            Poster Abstract: Security and Privacy in the Age of Cordless Power World</a>
+        </b>
+        <b>
+          <span style="color: blue">
+            <a target="_blank" href="papers/wu2020poster.pdf" class="conf">[PDF]</a>
+          </span>
+        </b>
+        <br>
+        <b>Yi Wu</b>, Zhuohang Li, Nicholas Van Nostrand, Jian Liu<br>
+      </p>
+    </div>
+   
+  </div>
   
-  <div class="col-12 col-lg-9">
+  </section>
 
-<ul>
+  
+
+  
+
+  <section id="teaching" class="home-section wg-accomplishments">
+    <div class="container content-wrapper">
+      <div class="row">
+        <div class="col-12 text-left">
+          <h2><b>Teaching</b></h2>
+        </div>
+      </div>
+
+      <ul>
+      <li>
+      <p>
+        <b>Teaching Assistant, The University of Tennessee, Knoxville</b><br>
+        COSC 356 Computer Architecture (Fall 2019, Spring 2020)<br>
+        COSC 361 Operating Systems (Fall 2020, Fall 2021, Fall 2022, Spring 2023)<br>
+        ECE 315 Signals and Systems I (Spring 2022)<br>
+        ECE 469/569 Mobile/Embedded System Security (Spring 2021, Fall 2021)
+      </p>
+    </li>
+
   <li>
-  <p>
-  <b> Outstanding Graduate Research Assistant of UTK,</b> 2023
-</li>
+      <p>
+        <b>Grader, Rutgers University</b><br>
+        ECE 501 System Analysis (Spring 2019)
+      </p>
+    </li>
+    </ul>
+    </div>
+  </section>
 
+  <section id="awards" class="home-section wg-accomplishments">
+    <div class="container content-wrapper">
+      <div class="row">
+        <div class="col-12 text-left">
+          <h2><b>Awards</b></h2>
+        </div>
+      </div>
+  
+      <ul>
+        <li>
+        <p>
+        <b> Outstanding Graduate Research Assistant of UTK,</b> 2023
+      </li>
+      
+         <li>
+        <p>
+        <b>S&P Student Travel Award,</b> 2023
+      </li>
+      
+        <li>
+        <p>
+        <b>ACM SigMobile Research Highlight,</b> 2022
+      </li>
+      
+        <li>
+        <p>
+        <b>ACSAC Student Conference Grant,</b> 2021
+      </li>
+      
+      
+        <li>
+        <p>
+        <b>CCS Student Conference Grant,</b> 2021
+      </li>
+      
+      
+        <li>
+        <p>
+       <b>DySPAN Student Travel Award,</b>  2019
+      </li>
+      
+      <li>
+        <p>
+        <b>Merit Scholarship of UESTC,</b> 2015
+      </p>
+      </li>
+        
+        </ul>    
+  
+    </div>
+  </section>
+
+
+  <section id="services" class="home-section wg-accomplishments">
+    <div class="container content-wrapper">
+      <div class="row">
+        <div class="col-12 text-left">
+          <h2><b>Services</b></h2>
+        </div>
+      </div>
+
+      <ul>
+  
+        <p>
+      <h3>Technical Program Committee</h3>
+      <li>
+        IEEE COMPSAC 2023
+      </li>
+      
+      
+      <h3>Reviewer</h3>
+      <li>
+        The Proceedings of the ACM on Interactive, Mobile, Wearable and
+      Ubiquitous Technologies (IMWUT)
+      </li>
+      
+      <li>
+        IEEE Transactions on Image Processing
+      </li>
+      
+      <li>
+         IEEE Transactions on Mobile Computing
+      </li>
+
+      <li>
+        IEEE Transactions on Neural Systems & Rehabilitation Engineering
+     </li>
+
+     <li>
+      Virtual Reality
+   </li>
+      
    <li>
-  <p>
-  <b>S&P Student Travel Award,</b> 2023
-</li>
-
-  <li>
-  <p>
-  <b>ACM SigMobile Research Highlight,</b> 2022
-</li>
-
-  <li>
-  <p>
-  <b>ACSAC Student Conference Grant,</b> 2021
-</li>
-
-
-  <li>
-  <p>
-  <b>CCS Student Conference Grant,</b> 2021
-</li>
-
-
-  <li>
-  <p>
- <b>DySPAN Student Travel Award,</b>  2019
-</li>
-
-<li>
-  <p>
-  <b>Merit Scholarship of UESTC,</b> 2015
-</p>
-</li>
+    RECENT ADVANCES IN ELECTRICAL & ELECTRONIC ENGINEERING
+ </li>
     
-
-    
-    
-  </ul>    
-
-
-  </div>
-</div>
-
-    </div>
-  </section>
-
-    <section id="services" class="home-section wg-featured   ">
-    <div class="container">
       
-
-
-<div class="row">
-  <div class="col-12 col-lg-3 section-heading">
-    <h2><b>Services</b></h2>
-    
-  </div>
-  <div class="col-12 col-lg-9">
-
-    
-<ul>
-  
-  <p>
-<h3>Technical Program Committee</h3>
-<li>
-  IEEE COMPSAC 2023
-</li>
-
-
-<h3>Reviewer</h3>
-<li>
-  The Proceedings of the ACM on Interactive, Mobile, Wearable and
-Ubiquitous Technologies (IMWUT)
-</li>
-
-<li>
-  IEEE Transactions on Image Processing
-</li>
-
-<li>
-   IEEE Transactions on Mobile Computing
-</li>
-
-
-
-    
-    
-  </ul>   
-    
-
-  
-
-  </div>
-</div>
-
-    </div>
-  </section>
-
-
-
-  <section id="miscs" class="home-section wg-featured   ">
-    <div class="container">
       
-
-
-<div class="row">
-  <div class="col-12 col-lg-3 section-heading">
-    <h2><b>Misc.</b></h2>
-    
-  </div>
-  <div class="col-12 col-lg-9">
-
-    
-<ul>
-  <li>
-  <p>
- I enjoy watching movies & reading detective fictions in my leisure time. <i>"The Pursuit of Happyness"</i>, <i>"Batman: The Dark Knight"</i> and <i>"Tokyo Godfathers"</i> are my favourites.
-</li>
-
-<!-- <li>
-  <p>
-I'm a trophy hunter and enjoy challenging hardcore video games. I got all achievements from <i>"The Binding of Issac: Afterbirth+"</i> and all Platinum trophies from <i>Dark Souls</i> Series.
-</p>
-</li> -->
-    
-<li>
-  <p>
-I also enjoy swimming & watching NBA games.
-</p>
-</li>
-    
-    
-  </ul>   
-    
-
-  
-
-  </div>
-</div>
-
+          
+          
+        </ul>   
     </div>
   </section>
+
+  <section id="miscs" class="home-section wg-accomplishments"">
+    <div class="container content-wrapper">
+      <div class="row">
+        <div class="col-12 text-left">
+          <h2><b>Misc.</b></h2>
+        </div>
+      </div>
+
+      <ul>
+        <li>
+        <p>
+       I enjoy watching movies & reading detective fictions in my leisure time. <i>"The Pursuit of Happyness"</i>, <i>"Batman: The Dark Knight"</i> and <i>"Tokyo Godfathers"</i> are my favourites.
+      </li>
+      
+      <!-- <li>
+        <p>
+      I'm a trophy hunter and enjoy challenging hardcore video games. I got all achievements from <i>"The Binding of Issac: Afterbirth+"</i> and all Platinum trophies from <i>Dark Souls</i> Series.
+      </p>
+      </li> -->
+          
+      <li>
+        <p>
+      I also enjoy swimming & watching NBA games.
+      </p>
+      </li>
+          
+          
+        </ul>     
+    </div>
+  </section>
+  
+
 
  
 
@@ -1037,7 +871,7 @@ Analytics"></a></div></noscript>
     WORK HARD, PLAY HARD.
   </p>
   <p class="powered-by">
-    Yi Wu © 2023 &middot; 
+    Yi Wu © 2024 &middot; 
 
     Powered by the
     <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
