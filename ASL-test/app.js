@@ -1,7 +1,8 @@
 const SUBMISSION_ENDPOINT = "https://script.google.com/macros/s/AKfycbwczJ8KJ8GgBnC5BArm4TS3-aG0Em6aCSLaf4ELjQGWKqvDHsp4nHh34YTYBHcsnxE9/exec";
-const RESULT_EMAIL = "yi.wu-1@ou.edu";
 const METHODS = ["A", "B", "C"];
 const RATINGS = [1, 2, 3, 4, 5];
+const FULL_PROGRESS_KEY = "asl-alignment-full-progress-v1";
+const FULL_PROGRESS_VERSION = 1;
 
 const samples = [
   { n: 1 }, { n: 2 }, { n: 3 }, { n: 4 }, { n: 5 }, { n: 6 },
@@ -20,11 +21,15 @@ const state = {
   answers: {},
   played: new Set(),
   currentIndex: 0,
-  sessionId: crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`,
+  sessionId: createSessionId(),
   submitting: false,
 };
 
 const card = document.querySelector("#study-card");
+
+function createSessionId() {
+  return crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`;
+}
 
 function escapeHtml(value) {
   return String(value)
@@ -43,6 +48,128 @@ function modeLabel() {
   return state.mode === "full" ? "Full evaluation" : "Quick test";
 }
 
+function readFullProgress() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(FULL_PROGRESS_KEY) || "null");
+    if (!saved || saved.version !== FULL_PROGRESS_VERSION || saved.mode !== "full") return null;
+
+    const answers = {};
+    samples.forEach(({ n }) => {
+      const source = saved.answers && saved.answers[n];
+      if (!source || typeof source !== "object") return;
+      const sampleAnswers = {};
+      METHODS.forEach((method) => {
+        const score = Number(source[method]);
+        if (RATINGS.includes(score)) sampleAnswers[method] = score;
+      });
+      if (Object.keys(sampleAnswers).length) answers[n] = sampleAnswers;
+    });
+
+    const currentIndex = Number.isInteger(saved.currentIndex)
+      ? Math.min(Math.max(saved.currentIndex, 0), samples.length - 1)
+      : 0;
+    const played = Array.isArray(saved.played)
+      ? saved.played.map(Number).filter((sample) => sample >= 1 && sample <= samples.length)
+      : [];
+
+    return {
+      version: FULL_PROGRESS_VERSION,
+      mode: "full",
+      stage: ["participant", "instructions", "sample", "review"].includes(saved.stage)
+        ? saved.stage
+        : "participant",
+      participantId: String(saved.participantId || "").slice(0, 120),
+      familiarity: String(saved.familiarity || ""),
+      proficiency: String(saved.proficiency || ""),
+      answers,
+      played,
+      currentIndex,
+      sessionId: String(saved.sessionId || createSessionId()),
+      savedAt: String(saved.savedAt || ""),
+    };
+  } catch {
+    return null;
+  }
+}
+
+function saveFullProgress(stage) {
+  if (state.mode !== "full") return;
+  try {
+    localStorage.setItem(FULL_PROGRESS_KEY, JSON.stringify({
+      version: FULL_PROGRESS_VERSION,
+      mode: "full",
+      stage,
+      participantId: state.participantId,
+      familiarity: state.familiarity,
+      proficiency: state.proficiency,
+      answers: state.answers,
+      played: Array.from(state.played),
+      currentIndex: state.currentIndex,
+      sessionId: state.sessionId,
+      savedAt: new Date().toISOString(),
+    }));
+  } catch {
+    // The study remains usable when browser storage is unavailable.
+  }
+}
+
+function clearFullProgress() {
+  try {
+    localStorage.removeItem(FULL_PROGRESS_KEY);
+  } catch {
+    // Ignore storage restrictions after a completed submission.
+  }
+}
+
+function resetEvaluation(mode) {
+  state.mode = mode;
+  state.activeSamples = mode === "full" ? samples : samples.slice(0, 2);
+  state.participantId = "";
+  state.familiarity = "";
+  state.proficiency = "";
+  state.answers = {};
+  state.played = new Set();
+  state.currentIndex = 0;
+  state.sessionId = createSessionId();
+  state.submitting = false;
+}
+
+function startNewEvaluation(mode) {
+  if (mode === "full") clearFullProgress();
+  resetEvaluation(mode);
+  saveFullProgress("participant");
+  renderParticipant();
+}
+
+function restoreFullEvaluation() {
+  const saved = readFullProgress();
+  if (!saved) {
+    startNewEvaluation("full");
+    return;
+  }
+
+  state.mode = "full";
+  state.activeSamples = samples;
+  state.participantId = saved.participantId;
+  state.familiarity = saved.familiarity;
+  state.proficiency = saved.proficiency;
+  state.answers = saved.answers;
+  state.played = new Set(saved.played);
+  state.currentIndex = saved.currentIndex;
+  state.sessionId = saved.sessionId;
+  state.submitting = false;
+
+  if (!state.participantId || !state.familiarity || !state.proficiency || saved.stage === "participant") {
+    renderParticipant();
+  } else if (saved.stage === "instructions") {
+    renderInstructions();
+  } else if (saved.stage === "review" && samples.every(({ n }) => isSampleComplete(n))) {
+    renderReview();
+  } else {
+    renderSample();
+  }
+}
+
 function renderShell(content, options = {}) {
   const progress = options.progress;
   const progressHeader = Number.isFinite(progress)
@@ -57,19 +184,88 @@ function renderShell(content, options = {}) {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-function renderWelcome() {
+function renderConsent() {
   renderShell(`
     <div class="title-block centered">
       <span class="section-number">01</span>
-      <p class="kicker">Choose a study length</p>
+      <p class="kicker">Consent information</p>
       <h1>Generated Sign-Text Alignment Evaluation</h1>
-      <p class="lead">Watch comparison videos and rate how closely each generated signing method matches the text.</p>
+      <p class="lead">Thank you for considering this study. Your perspective can help us better understand how clearly generated signing aligns with written text.</p>
+    </div>
+    <div class="consent-copy">
+      <section class="consent-section">
+        <h2>What you will do</h2>
+        <p>You will watch short comparison videos and rate Method A, Method B, and Method C on a scale from 1 to 5. You may choose the full evaluation with 30 videos or a quick test with 2 videos, and you may replay a video before answering.</p>
+      </section>
+      <section class="consent-section">
+        <h2>What we collect</h2>
+        <p>We collect the participant ID provided by the research team, your self-reported ASL familiarity and proficiency, your ratings, and the submission date and time. We do not ask for your name or email address.</p>
+      </section>
+      <section class="consent-section">
+        <h2>Your choice and comfort</h2>
+        <p>Taking part is completely voluntary. You may pause, take a break, or leave the page at any time before submitting. The activity involves ordinary screen and video viewing; please stop whenever you feel tired or uncomfortable.</p>
+      </section>
+      <section class="consent-section">
+        <h2>Progress and privacy</h2>
+        <p>If you choose the full evaluation, an unfinished draft is saved only in this browser so you can return and continue. After you submit, the draft is removed and your response is stored in the research team's results workbook.</p>
+      </section>
+      <p class="consent-contact">Questions about the study are welcome. Please contact <a href="mailto:yi.wu-1@ou.edu">yi.wu-1@ou.edu</a>.</p>
+      <p class="consent-affirmation">By selecting “I agree to participate,” you confirm that you have read this information and voluntarily choose to take part.</p>
+    </div>
+    <div class="action-row action-row--center">
+      <button class="action action--primary" id="agree-consent" type="button">I agree to participate</button>
+      <button class="action action--quiet" id="decline-consent" type="button">I do not agree</button>
+    </div>
+  `, { wide: true });
+
+  document.querySelector("#agree-consent").addEventListener("click", renderWelcome);
+  document.querySelector("#decline-consent").addEventListener("click", renderDeclined);
+}
+
+function renderDeclined() {
+  renderShell(`
+    <div class="centered-message">
+      <p class="kicker">Participation declined</p>
+      <h1>No response has been recorded.</h1>
+      <p>Thank you for taking the time to consider the study. You may close this page now.</p>
+      <button class="action action--quiet" id="return-to-consent" type="button">Return to consent information</button>
+    </div>
+  `);
+  document.querySelector("#return-to-consent").addEventListener("click", renderConsent);
+}
+
+function renderWelcome() {
+  const saved = readFullProgress();
+  const completedCount = saved
+    ? samples.filter(({ n }) => METHODS.every((method) => RATINGS.includes(Number(saved.answers[n]?.[method])))).length
+    : 0;
+  const completedWording = completedCount === 1 ? "video has" : "videos have";
+  const resumeMarkup = saved
+    ? `<section class="resume-panel" aria-label="Saved full evaluation">
+        <div class="resume-copy">
+          <p class="kicker">Saved full evaluation</p>
+          <h2>Continue from video ${saved.currentIndex + 1} of 30</h2>
+          <p>${completedCount} ${completedWording} all three ratings completed. Your draft is stored only in this browser.</p>
+        </div>
+        <div class="resume-actions">
+          <button class="action action--primary" id="resume-full" type="button">Continue saved evaluation</button>
+          <button class="action action--quiet" id="restart-full" type="button">Restart full evaluation</button>
+        </div>
+      </section>`
+    : "";
+
+  renderShell(`
+    <div class="title-block centered">
+      <span class="section-number">02</span>
+      <p class="kicker">Choose a study length</p>
+      <h1>How would you like to participate?</h1>
+      <p class="lead">Both options use the same videos and rating scale. Choose the length that works best for you today.</p>
     </div>
     <div class="mode-grid" role="group" aria-label="Evaluation length">
       <button class="mode-choice" id="full-mode" type="button">
         <span class="mode-count">30 videos</span>
         <strong>Full evaluation</strong>
-        <small>Complete the full study.</small>
+        <small>${saved ? "A saved draft is ready to continue." : "Progress is saved in this browser so you can return later."}</small>
       </button>
       <button class="mode-choice" id="test-mode" type="button">
         <span class="mode-count">2 videos</span>
@@ -77,26 +273,27 @@ function renderWelcome() {
         <small>Check the workflow with a short version.</small>
       </button>
     </div>
+    ${resumeMarkup}
     <p class="quiet-note">Participation is voluntary. You may stop at any time before submitting.</p>
   `, { wide: true });
 
-  document.querySelector("#full-mode").addEventListener("click", () => selectMode("full"));
-  document.querySelector("#test-mode").addEventListener("click", () => selectMode("test2"));
-}
-
-function selectMode(mode) {
-  state.mode = mode;
-  state.activeSamples = mode === "full" ? samples : samples.slice(0, 2);
-  state.answers = {};
-  state.played = new Set();
-  state.currentIndex = 0;
-  renderParticipant();
+  document.querySelector("#full-mode").addEventListener("click", () => {
+    if (saved) restoreFullEvaluation();
+    else startNewEvaluation("full");
+  });
+  document.querySelector("#test-mode").addEventListener("click", () => startNewEvaluation("test2"));
+  document.querySelector("#resume-full")?.addEventListener("click", restoreFullEvaluation);
+  document.querySelector("#restart-full")?.addEventListener("click", () => {
+    if (window.confirm("Delete the saved full-evaluation draft and start again?")) {
+      startNewEvaluation("full");
+    }
+  });
 }
 
 function renderParticipant() {
   renderShell(`
     <div class="title-block">
-      <span class="section-number">02</span>
+      <span class="section-number">03</span>
       <div>
         <p class="kicker">Participant information</p>
         <h1>Before you begin</h1>
@@ -156,6 +353,7 @@ function renderParticipant() {
       error.hidden = false;
       return;
     }
+    saveFullProgress("instructions");
     renderInstructions();
   });
 }
@@ -163,7 +361,7 @@ function renderParticipant() {
 function renderInstructions() {
   renderShell(`
     <div class="title-block">
-      <span class="section-number">03</span>
+      <span class="section-number">04</span>
       <div>
         <p class="kicker">How to rate</p>
         <h1>Use one score for each method</h1>
@@ -189,6 +387,7 @@ function renderInstructions() {
   document.querySelector("#back-to-participant").addEventListener("click", renderParticipant);
   document.querySelector("#begin-evaluation").addEventListener("click", () => {
     state.currentIndex = 0;
+    saveFullProgress("sample");
     renderSample();
   });
 }
@@ -269,6 +468,7 @@ function renderSample() {
 
   video.addEventListener("play", () => {
     state.played.add(sample.n);
+    saveFullProgress("sample");
     updateNextState();
   }, { once: true });
 
@@ -276,14 +476,19 @@ function renderSample() {
     input.addEventListener("change", () => {
       const method = input.name.split("-").at(-1);
       getSampleAnswers(sample.n)[method] = Number(input.value);
+      saveFullProgress("sample");
       updateNextState();
     });
   });
 
   document.querySelector("#previous-step").addEventListener("click", () => {
-    if (state.currentIndex === 0) renderInstructions();
+    if (state.currentIndex === 0) {
+      saveFullProgress("instructions");
+      renderInstructions();
+    }
     else {
       state.currentIndex -= 1;
+      saveFullProgress("sample");
       renderSample();
     }
   });
@@ -292,6 +497,7 @@ function renderSample() {
     if (state.currentIndex === state.activeSamples.length - 1) renderReview();
     else {
       state.currentIndex += 1;
+      saveFullProgress("sample");
       renderSample();
     }
   });
@@ -299,9 +505,10 @@ function renderSample() {
 
 function renderReview() {
   const scoreCount = state.activeSamples.length * METHODS.length;
+  saveFullProgress("review");
   renderShell(`
     <div class="title-block">
-      <span class="section-number">04</span>
+      <span class="section-number">05</span>
       <div>
         <p class="kicker">Final review</p>
         <h1>Ready to submit</h1>
@@ -311,7 +518,6 @@ function renderReview() {
       <div><dt>Study mode</dt><dd>${modeLabel()} (${state.activeSamples.length} videos)</dd></div>
       <div><dt>Participant ID</dt><dd>${escapeHtml(state.participantId)}</dd></div>
       <div><dt>Ratings completed</dt><dd>${scoreCount} of ${scoreCount}</dd></div>
-      <div><dt>Results delivery</dt><dd>Excel workbook emailed to ${RESULT_EMAIL}</dd></div>
     </dl>
     <p id="submit-error" class="status-line status-line--error" hidden></p>
     <div class="action-row action-row--split">
@@ -341,7 +547,7 @@ async function submitResults() {
 
   state.submitting = true;
   button.disabled = true;
-  button.textContent = "Sending...";
+  button.textContent = "Submitting...";
 
   const payload = {
     version: 2,
@@ -361,6 +567,7 @@ async function submitResults() {
       headers: { "Content-Type": "text/plain;charset=utf-8" },
       body: JSON.stringify(payload),
     });
+    if (state.mode === "full") clearFullProgress();
     renderComplete();
   } catch {
     state.submitting = false;
@@ -377,11 +584,11 @@ function renderComplete() {
     <div class="centered-message">
       <p class="kicker">Submission complete</p>
       <h1>Thank you for completing the evaluation.</h1>
-      <p>Your response was recorded. The latest Excel workbook is being emailed to ${RESULT_EMAIL}.</p>
+      <p>Your response was recorded successfully. You may now close this page.</p>
       <button class="action action--quiet" id="start-over" type="button">Start another response</button>
     </div>
   `);
   document.querySelector("#start-over").addEventListener("click", () => window.location.reload());
 }
 
-renderWelcome();
+renderConsent();
