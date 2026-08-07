@@ -3,85 +3,18 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta
-      name="description"
-      content="A web evaluation page for rating semantic alignment in generated ASL comparison videos."
-    >
+    <meta name="description" content="A step-by-step ASL sign-text alignment evaluation.">
+    <meta name="robots" content="noindex, nofollow">
     <title>ASL Generated Sign-Text Alignment Evaluation</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="app.js" defer></script>
+    <link rel="stylesheet" href="styles.css?v=3">
+    <script src="app.js?v=3" defer></script>
   </head>
   <body>
-    <main>
-      <section class="intro">
-        <div class="intro-copy">
-          <p class="eyebrow">ASL sign-text evaluation</p>
-          <h1>Generated Sign-Text Alignment Evaluation</h1>
-          <p>
-            Watch each comparison video, then independently rate how well Method A,
-            Method B, and Method C convey the meaning of the text annotation.
-          </p>
-        </div>
-        <div class="scale" aria-label="Rating scale">
-          <div><strong>1</strong><span>Not aligned at all</span></div>
-          <div><strong>2</strong><span>Slightly aligned</span></div>
-          <div><strong>3</strong><span>Moderately aligned</span></div>
-          <div><strong>4</strong><span>Well aligned</span></div>
-          <div><strong>5</strong><span>Completely aligned</span></div>
-        </div>
-      </section>
-
-      <div class="progress-bar" id="progress-bar" aria-label="0% complete">
-        <span id="progress-fill"></span>
-      </div>
-
-      <form class="evaluation" id="evaluation" novalidate>
-        <section class="participant">
-          <label>
-            Participant ID
-            <input
-              id="participant-id"
-              type="text"
-              placeholder="Enter the ID provided by the research team"
-              required
-            >
-          </label>
-
-          <fieldset>
-            <legend>Are you familiar with American Sign Language (ASL)?</legend>
-            <div class="option-row">
-              <label class="pill"><input type="radio" name="familiarity" value="Yes" required>Yes</label>
-              <label class="pill"><input type="radio" name="familiarity" value="No" required>No</label>
-            </div>
-          </fieldset>
-
-          <fieldset>
-            <legend>How would you describe your ASL proficiency?</legend>
-            <div class="option-row wrap">
-              <label class="pill"><input type="radio" name="proficiency" value="Native or near-native" required>Native or near-native</label>
-              <label class="pill"><input type="radio" name="proficiency" value="Advanced" required>Advanced</label>
-              <label class="pill"><input type="radio" name="proficiency" value="Intermediate" required>Intermediate</label>
-              <label class="pill"><input type="radio" name="proficiency" value="Beginner" required>Beginner</label>
-              <label class="pill"><input type="radio" name="proficiency" value="No ASL knowledge" required>No ASL knowledge</label>
-            </div>
-          </fieldset>
-        </section>
-
-        <section class="samples" id="samples" aria-label="Video samples"></section>
-
-        <div class="submit-panel">
-          <div>
-            <strong id="rating-count">0 / 90 ratings complete</strong>
-            <span>Multiple methods may receive the same score.</span>
-          </div>
-          <button id="submit-button" type="submit" disabled>Submit evaluation</button>
-        </div>
-
-        <p class="message error" id="error-message" hidden></p>
-        <p class="message success" id="success-message" hidden>
-          Thank you. The evaluation was submitted to the response form.
-        </p>
-      </form>
+    <main id="study-shell">
+      <section id="study-card" class="study-card" aria-live="polite"></section>
     </main>
+    <noscript>
+      <p class="fatal-message">JavaScript is required to run this evaluation.</p>
+    </noscript>
   </body>
 </html>

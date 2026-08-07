@@ -1,212 +1,387 @@
-const formEndpoint =
-  "https://docs.google.com/forms/d/e/1FAIpQLSeUJ_aOHjd4Bl0iKHAE_Vh_X4UScqd3_UP1kP0Yi3Ud7_OTBg/formResponse";
-
-const participantEntry = "747785341";
-const familiarityEntry = "101509960";
-const proficiencyEntry = "580743664";
-
-const ratings = [
-  { score: 1, label: "Not aligned at all", value: "1 \u2014 Not aligned at all" },
-  { score: 2, label: "Slightly aligned", value: "2 \u2014 Slightly aligned" },
-  { score: 3, label: "Moderately aligned", value: "3 \u2014 Moderately aligned" },
-  { score: 4, label: "Well aligned", value: "4 \u2014 Well aligned" },
-  { score: 5, label: "Completely aligned", value: "5 \u2014 Completely aligned" },
-];
+const SUBMISSION_ENDPOINT = "https://script.google.com/macros/s/AKfycbwczJ8KJ8GgBnC5BArm4TS3-aG0Em6aCSLaf4ELjQGWKqvDHsp4nHh34YTYBHcsnxE9/exec";
+const RESULT_EMAIL = "yi.wu-1@ou.edu";
+const METHODS = ["A", "B", "C"];
+const RATINGS = [1, 2, 3, 4, 5];
 
 const samples = [
-  { n: 1, entries: { A: "1528364991", B: "609670683", C: "1513250008" } },
-  { n: 2, entries: { A: "516305822", B: "1992036312", C: "1010857658" } },
-  { n: 3, entries: { A: "1384397939", B: "337808088", C: "1466988148" } },
-  { n: 4, entries: { A: "1512549686", B: "1645784889", C: "1678896126" } },
-  { n: 5, entries: { A: "529756573", B: "1381329523", C: "532971934" } },
-  { n: 6, entries: { A: "1102084549", B: "184009412", C: "1168277656" } },
-  { n: 7, entries: { A: "1696184201", B: "1647060227", C: "215669029" } },
-  { n: 8, entries: { A: "1212010733", B: "124159197", C: "843166521" } },
-  { n: 9, entries: { A: "1243174572", B: "1328671152", C: "1755075817" } },
-  { n: 10, entries: { A: "1884358613", B: "1552676893", C: "428159799" } },
-  { n: 11, entries: { A: "479833574", B: "1005942399", C: "1497886207" } },
-  { n: 12, entries: { A: "111092163", B: "946977052", C: "221139436" } },
-  { n: 13, entries: { A: "1144841792", B: "1316052078", C: "776668256" } },
-  { n: 14, entries: { A: "1862909936", B: "214196372", C: "1961016701" } },
-  { n: 15, entries: { A: "1658573837", B: "565903525", C: "2101097341" } },
-  { n: 16, entries: { A: "1777527172", B: "65973017", C: "932782269" } },
-  { n: 17, entries: { A: "1002748724", B: "487460333", C: "2039361957" } },
-  { n: 18, entries: { A: "43590863", B: "1782086015", C: "183941265" } },
-  { n: 19, entries: { A: "309892260", B: "1300749314", C: "1512759730" } },
-  { n: 20, entries: { A: "1747836422", B: "1283493014", C: "2144731777" } },
-  { n: 21, entries: { A: "1202594469", B: "142368287", C: "1451355542" } },
-  { n: 22, entries: { A: "2009499642", B: "1594346278", C: "1212592773" } },
-  { n: 23, entries: { A: "1100971715", B: "1278734927", C: "66558015" } },
-  { n: 24, entries: { A: "2033675001", B: "520175322", C: "699087461" } },
-  { n: 25, entries: { A: "1202666874", B: "721459622", C: "1529801713" } },
-  { n: 26, entries: { A: "1581275395", B: "390827257", C: "1491217462" } },
-  { n: 27, entries: { A: "1927634369", B: "21828340", C: "1429210650" } },
-  { n: 28, entries: { A: "1813873609", B: "812553446", C: "2007409174" } },
-  { n: 29, entries: { A: "1288304941", B: "2061594453", C: "1517516970" } },
-  { n: 30, entries: { A: "815150177", B: "336131899", C: "291443491" } },
+  { n: 1 }, { n: 2 }, { n: 3 }, { n: 4 }, { n: 5 }, { n: 6 },
+  { n: 7 }, { n: 8 }, { n: 9 }, { n: 10 }, { n: 11 }, { n: 12 },
+  { n: 13 }, { n: 14 }, { n: 15 }, { n: 16 }, { n: 17 }, { n: 18 },
+  { n: 19 }, { n: 20 }, { n: 21 }, { n: 22 }, { n: 23 }, { n: 24 },
+  { n: 25 }, { n: 26 }, { n: 27 }, { n: 28 }, { n: 29 }, { n: 30 },
 ];
 
-const methods = ["A", "B", "C"];
-const answers = {};
-const totalRatings = samples.length * methods.length;
+const state = {
+  mode: "",
+  activeSamples: [],
+  participantId: "",
+  familiarity: "",
+  proficiency: "",
+  answers: {},
+  played: new Set(),
+  currentIndex: 0,
+  sessionId: crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`,
+  submitting: false,
+};
 
-const form = document.querySelector("#evaluation");
-const samplesContainer = document.querySelector("#samples");
-const participantId = document.querySelector("#participant-id");
-const progressBar = document.querySelector("#progress-bar");
-const progressFill = document.querySelector("#progress-fill");
-const ratingCount = document.querySelector("#rating-count");
-const submitButton = document.querySelector("#submit-button");
-const errorMessage = document.querySelector("#error-message");
-const successMessage = document.querySelector("#success-message");
-let submitting = false;
+const card = document.querySelector("#study-card");
 
-function answerKey(sample, method) {
-  return `${sample}-${method}`;
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
 }
 
 function videoPath(sample) {
   return `videos/sample-${String(sample).padStart(2, "0")}.mp4`;
 }
 
-function selectedValue(name) {
-  return form.querySelector(`input[name="${name}"]:checked`)?.value || "";
+function modeLabel() {
+  return state.mode === "full" ? "Full evaluation" : "Quick test";
 }
 
-function isReady() {
-  return Boolean(
-    participantId.value.trim() &&
-      selectedValue("familiarity") &&
-      selectedValue("proficiency") &&
-      Object.keys(answers).length === totalRatings &&
-      !submitting,
-  );
+function renderShell(content, options = {}) {
+  const progress = options.progress;
+  const progressHeader = Number.isFinite(progress)
+    ? `<header class="study-progress" aria-label="Study progress">
+        <div class="progress-track"><div class="progress-fill" style="width:${progress}%"></div></div>
+        <span>${Math.round(progress)}%</span>
+      </header>`
+    : "";
+
+  card.className = options.wide ? "study-card study-card--wide" : "study-card";
+  card.innerHTML = `${progressHeader}${content}`;
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-function updateProgress() {
-  const answered = Object.keys(answers).length;
-  const progress = Math.round((answered / totalRatings) * 100);
-  ratingCount.textContent = `${answered} / ${totalRatings} ratings complete`;
-  progressFill.style.width = `${progress}%`;
-  progressBar.setAttribute("aria-label", `${progress}% complete`);
-  submitButton.disabled = !isReady();
-}
-
-function createRating(sample, method, rating) {
-  const label = document.createElement("label");
-  label.className = "rating";
-
-  const input = document.createElement("input");
-  input.type = "radio";
-  input.name = `sample-${sample}-${method}`;
-  input.value = rating.value;
-  input.required = true;
-  input.addEventListener("change", () => {
-    answers[answerKey(sample, method)] = rating.value;
-    label.closest(".rating-row").querySelectorAll(".rating").forEach((item) => {
-      item.classList.toggle("selected", item.contains(input));
-    });
-    updateProgress();
-  });
-
-  const score = document.createElement("strong");
-  score.textContent = String(rating.score);
-  const description = document.createElement("span");
-  description.textContent = rating.label;
-
-  label.append(input, score, description);
-  return label;
-}
-
-function createSample(sample) {
-  const article = document.createElement("article");
-  article.className = "sample-card";
-
-  const header = document.createElement("div");
-  header.className = "sample-head";
-  header.innerHTML = `
-    <div>
-      <span>Sample ${sample.n} of ${samples.length}</span>
-      <h2>Rate semantic alignment after watching the complete video.</h2>
+function renderWelcome() {
+  renderShell(`
+    <div class="title-block centered">
+      <span class="section-number">01</span>
+      <p class="kicker">Choose a study length</p>
+      <h1>Generated Sign-Text Alignment Evaluation</h1>
+      <p class="lead">Watch comparison videos and rate how closely each generated signing method matches the text.</p>
     </div>
-  `;
+    <div class="mode-grid" role="group" aria-label="Evaluation length">
+      <button class="mode-choice" id="full-mode" type="button">
+        <span class="mode-count">30 videos</span>
+        <strong>Full evaluation</strong>
+        <small>Complete the full study.</small>
+      </button>
+      <button class="mode-choice" id="test-mode" type="button">
+        <span class="mode-count">2 videos</span>
+        <strong>Quick test</strong>
+        <small>Check the workflow with a short version.</small>
+      </button>
+    </div>
+    <p class="quiet-note">Participation is voluntary. You may stop at any time before submitting.</p>
+  `, { wide: true });
 
-  const videoShell = document.createElement("div");
-  videoShell.className = "video-shell";
-  const video = document.createElement("video");
-  video.setAttribute("aria-label", `Comparison video for sample ${sample.n}`);
-  video.controls = true;
-  video.muted = true;
-  video.playsInline = true;
-  video.preload = "metadata";
-  video.src = videoPath(sample.n);
-  video.textContent = "Your browser does not support embedded MP4 video.";
-  videoShell.append(video);
-
-  const methodGrid = document.createElement("div");
-  methodGrid.className = "method-grid";
-  methods.forEach((method) => {
-    const fieldset = document.createElement("fieldset");
-    fieldset.className = "method";
-    const legend = document.createElement("legend");
-    legend.textContent = `Method ${method}`;
-    const ratingRow = document.createElement("div");
-    ratingRow.className = "rating-row";
-    ratings.forEach((rating) => ratingRow.append(createRating(sample.n, method, rating)));
-    fieldset.append(legend, ratingRow);
-    methodGrid.append(fieldset);
-  });
-
-  article.append(header, videoShell, methodGrid);
-  return article;
+  document.querySelector("#full-mode").addEventListener("click", () => selectMode("full"));
+  document.querySelector("#test-mode").addEventListener("click", () => selectMode("test2"));
 }
 
-samples.forEach((sample) => samplesContainer.append(createSample(sample)));
-participantId.addEventListener("input", updateProgress);
-form.querySelectorAll('input[name="familiarity"], input[name="proficiency"]').forEach((input) => {
-  input.addEventListener("change", updateProgress);
-});
+function selectMode(mode) {
+  state.mode = mode;
+  state.activeSamples = mode === "full" ? samples : samples.slice(0, 2);
+  state.answers = {};
+  state.played = new Set();
+  state.currentIndex = 0;
+  renderParticipant();
+}
 
-form.addEventListener("submit", async (event) => {
-  event.preventDefault();
-  errorMessage.hidden = true;
-  successMessage.hidden = true;
+function renderParticipant() {
+  renderShell(`
+    <div class="title-block">
+      <span class="section-number">02</span>
+      <div>
+        <p class="kicker">Participant information</p>
+        <h1>Before you begin</h1>
+        <p class="lead compact-lead">${modeLabel()} selected. No participant name is collected.</p>
+      </div>
+    </div>
+    <form id="participant-form" class="participant-form">
+      <label class="field-label" for="participant-id">Participant ID</label>
+      <input id="participant-id" type="text" maxlength="120"
+        placeholder="Enter the ID provided by the research team"
+        value="${escapeHtml(state.participantId)}" required>
 
-  if (!isReady()) {
-    errorMessage.textContent =
-      "Please complete participant information and all 90 ratings before submitting.";
-    errorMessage.hidden = false;
+      <fieldset class="question-block">
+        <legend>Are you familiar with American Sign Language (ASL)?</legend>
+        <div class="choice-row">
+          ${["Yes", "No"].map((option) => `
+            <label class="choice-pill">
+              <input type="radio" name="familiarity" value="${option}"
+                ${state.familiarity === option ? "checked" : ""} required>
+              <span>${option}</span>
+            </label>`).join("")}
+        </div>
+      </fieldset>
+
+      <fieldset class="question-block">
+        <legend>How would you describe your ASL proficiency?</legend>
+        <div class="choice-row choice-row--wrap">
+          ${["Native or near-native", "Advanced", "Intermediate", "Beginner", "No ASL knowledge"]
+            .map((option) => `
+              <label class="choice-pill">
+                <input type="radio" name="proficiency" value="${option}"
+                  ${state.proficiency === option ? "checked" : ""} required>
+                <span>${option}</span>
+              </label>`).join("")}
+        </div>
+      </fieldset>
+
+      <p id="participant-error" class="status-line status-line--error" hidden></p>
+      <div class="action-row action-row--split">
+        <button class="action action--quiet" id="back-to-mode" type="button">Back</button>
+        <button class="action action--primary" type="submit">Continue</button>
+      </div>
+    </form>
+  `);
+
+  document.querySelector("#back-to-mode").addEventListener("click", renderWelcome);
+  document.querySelector("#participant-form").addEventListener("submit", (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    state.participantId = document.querySelector("#participant-id").value.trim();
+    state.familiarity = String(formData.get("familiarity") || "");
+    state.proficiency = String(formData.get("proficiency") || "");
+
+    if (!state.participantId || !state.familiarity || !state.proficiency) {
+      const error = document.querySelector("#participant-error");
+      error.textContent = "Please complete all three fields.";
+      error.hidden = false;
+      return;
+    }
+    renderInstructions();
+  });
+}
+
+function renderInstructions() {
+  renderShell(`
+    <div class="title-block">
+      <span class="section-number">03</span>
+      <div>
+        <p class="kicker">How to rate</p>
+        <h1>Use one score for each method</h1>
+      </div>
+    </div>
+    <p class="lead">Watch the complete video, then rate Method A, Method B, and Method C independently.</p>
+    <div class="scale-line" aria-label="Rating scale from 1 to 5">
+      <span><strong>1</strong> Not aligned at all</span>
+      <span><strong>3</strong> Moderately aligned</span>
+      <span><strong>5</strong> Completely aligned</span>
+    </div>
+    <ul class="procedure-list">
+      <li>You may replay each video.</li>
+      <li>Multiple methods may receive the same score.</li>
+      <li>All three scores are required before continuing.</li>
+    </ul>
+    <div class="action-row action-row--split">
+      <button class="action action--quiet" id="back-to-participant" type="button">Back</button>
+      <button class="action action--primary" id="begin-evaluation" type="button">Begin evaluation</button>
+    </div>
+  `);
+
+  document.querySelector("#back-to-participant").addEventListener("click", renderParticipant);
+  document.querySelector("#begin-evaluation").addEventListener("click", () => {
+    state.currentIndex = 0;
+    renderSample();
+  });
+}
+
+function getSampleAnswers(sampleNumber) {
+  if (!state.answers[sampleNumber]) state.answers[sampleNumber] = {};
+  return state.answers[sampleNumber];
+}
+
+function isSampleComplete(sampleNumber) {
+  const answers = getSampleAnswers(sampleNumber);
+  return METHODS.every((method) => RATINGS.includes(Number(answers[method])));
+}
+
+function ratingMarkup(sampleNumber, method) {
+  const answers = getSampleAnswers(sampleNumber);
+  return `
+    <fieldset class="method-row">
+      <legend>Method ${method}</legend>
+      <div class="score-control" role="radiogroup" aria-label="Method ${method} score">
+        ${RATINGS.map((score) => `
+          <label class="score-option" title="Score ${score}">
+            <input type="radio" name="sample-${sampleNumber}-${method}" value="${score}"
+              ${Number(answers[method]) === score ? "checked" : ""}>
+            <span>${score}</span>
+          </label>`).join("")}
+      </div>
+    </fieldset>`;
+}
+
+function renderSample() {
+  const sample = state.activeSamples[state.currentIndex];
+  const progress = Math.round(((state.currentIndex + 1) / (state.activeSamples.length + 1)) * 100);
+  const completed = isSampleComplete(sample.n);
+  const played = state.played.has(sample.n);
+
+  renderShell(`
+    <div class="trial-heading">
+      <div>
+        <p class="kicker">${modeLabel()}</p>
+        <h1>Video ${state.currentIndex + 1} of ${state.activeSamples.length}</h1>
+      </div>
+      <span class="sample-id">Sample ${sample.n}</span>
+    </div>
+    <div class="video-shell">
+      <video id="sample-video" aria-label="Comparison video for sample ${sample.n}"
+        controls muted playsinline preload="metadata" src="${videoPath(sample.n)}">
+        Your browser does not support embedded MP4 video.
+      </video>
+    </div>
+    <p class="scale-hint"><strong>1</strong> Not aligned at all <span></span> <strong>5</strong> Completely aligned</p>
+    <div class="method-list">
+      ${METHODS.map((method) => ratingMarkup(sample.n, method)).join("")}
+    </div>
+    <p id="sample-status" class="status-line">${played ? "Video played." : "Play the video before continuing."}</p>
+    <div class="action-row action-row--split">
+      <button class="action action--quiet" id="previous-step" type="button">Back</button>
+      <button class="action action--primary" id="next-step" type="button"
+        ${played && completed ? "" : "disabled"}>
+        ${state.currentIndex === state.activeSamples.length - 1 ? "Review responses" : "Next video"}
+      </button>
+    </div>
+  `, { progress, wide: true });
+
+  const video = document.querySelector("#sample-video");
+  const next = document.querySelector("#next-step");
+  const status = document.querySelector("#sample-status");
+
+  function updateNextState() {
+    const ready = state.played.has(sample.n) && isSampleComplete(sample.n);
+    next.disabled = !ready;
+    status.textContent = ready
+      ? "All three scores are complete."
+      : state.played.has(sample.n)
+        ? "Select one score for each method."
+        : "Play the video before continuing.";
+  }
+
+  video.addEventListener("play", () => {
+    state.played.add(sample.n);
+    updateNextState();
+  }, { once: true });
+
+  document.querySelectorAll(".score-option input").forEach((input) => {
+    input.addEventListener("change", () => {
+      const method = input.name.split("-").at(-1);
+      getSampleAnswers(sample.n)[method] = Number(input.value);
+      updateNextState();
+    });
+  });
+
+  document.querySelector("#previous-step").addEventListener("click", () => {
+    if (state.currentIndex === 0) renderInstructions();
+    else {
+      state.currentIndex -= 1;
+      renderSample();
+    }
+  });
+
+  next.addEventListener("click", () => {
+    if (state.currentIndex === state.activeSamples.length - 1) renderReview();
+    else {
+      state.currentIndex += 1;
+      renderSample();
+    }
+  });
+}
+
+function renderReview() {
+  const scoreCount = state.activeSamples.length * METHODS.length;
+  renderShell(`
+    <div class="title-block">
+      <span class="section-number">04</span>
+      <div>
+        <p class="kicker">Final review</p>
+        <h1>Ready to submit</h1>
+      </div>
+    </div>
+    <dl class="review-list">
+      <div><dt>Study mode</dt><dd>${modeLabel()} (${state.activeSamples.length} videos)</dd></div>
+      <div><dt>Participant ID</dt><dd>${escapeHtml(state.participantId)}</dd></div>
+      <div><dt>Ratings completed</dt><dd>${scoreCount} of ${scoreCount}</dd></div>
+      <div><dt>Results delivery</dt><dd>Excel workbook emailed to ${RESULT_EMAIL}</dd></div>
+    </dl>
+    <p id="submit-error" class="status-line status-line--error" hidden></p>
+    <div class="action-row action-row--split">
+      <button class="action action--quiet" id="back-to-last" type="button">Back</button>
+      <button class="action action--primary" id="submit-results" type="button">Submit results</button>
+    </div>
+  `, { progress: 100 });
+
+  document.querySelector("#back-to-last").addEventListener("click", () => {
+    state.currentIndex = state.activeSamples.length - 1;
+    renderSample();
+  });
+  document.querySelector("#submit-results").addEventListener("click", submitResults);
+}
+
+async function submitResults() {
+  if (state.submitting) return;
+  const button = document.querySelector("#submit-results");
+  const error = document.querySelector("#submit-error");
+  error.hidden = true;
+
+  if (SUBMISSION_ENDPOINT.includes("__APPS_SCRIPT")) {
+    error.textContent = "The response service is not connected yet.";
+    error.hidden = false;
     return;
   }
 
-  const payload = new FormData();
-  payload.set(`entry.${participantEntry}`, participantId.value.trim());
-  payload.set(`entry.${familiarityEntry}`, selectedValue("familiarity"));
-  payload.set(`entry.${proficiencyEntry}`, selectedValue("proficiency"));
+  state.submitting = true;
+  button.disabled = true;
+  button.textContent = "Sending...";
 
-  samples.forEach((sample) => {
-    methods.forEach((method) => {
-      payload.set(`entry.${sample.entries[method]}`, answers[answerKey(sample.n, method)]);
-    });
-  });
-
-  submitting = true;
-  submitButton.textContent = "Submitting...";
-  updateProgress();
+  const payload = {
+    version: 2,
+    sessionId: state.sessionId,
+    submittedAt: new Date().toISOString(),
+    mode: state.mode,
+    participantId: state.participantId,
+    familiarity: state.familiarity,
+    proficiency: state.proficiency,
+    answers: state.answers,
+  };
 
   try {
-    await fetch(formEndpoint, { method: "POST", body: payload, mode: "no-cors" });
-    successMessage.hidden = false;
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    await fetch(SUBMISSION_ENDPOINT, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(payload),
+    });
+    renderComplete();
   } catch {
-    errorMessage.textContent =
-      "Submission did not complete. Please check your network connection and try again.";
-    errorMessage.hidden = false;
-  } finally {
-    submitting = false;
-    submitButton.textContent = "Submit evaluation";
-    updateProgress();
+    state.submitting = false;
+    button.disabled = false;
+    button.textContent = "Submit results";
+    error.textContent = "The results could not be sent. Check your connection and try again.";
+    error.hidden = false;
   }
-});
+}
 
-updateProgress();
+function renderComplete() {
+  renderShell(`
+    <div class="completion-mark" aria-hidden="true">OK</div>
+    <div class="centered-message">
+      <p class="kicker">Submission complete</p>
+      <h1>Thank you for completing the evaluation.</h1>
+      <p>Your response was recorded. The latest Excel workbook is being emailed to ${RESULT_EMAIL}.</p>
+      <button class="action action--quiet" id="start-over" type="button">Start another response</button>
+    </div>
+  `);
+  document.querySelector("#start-over").addEventListener("click", () => window.location.reload());
+}
+
+renderWelcome();
